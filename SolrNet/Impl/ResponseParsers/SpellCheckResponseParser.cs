@@ -57,9 +57,22 @@ namespace SolrNet.Impl.ResponseParsers {
                 result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
                 result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
                 var suggestions = new List<string>();
-                var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
+                //Edited By Heran At 2013-07-08 16:11:10
+                //solr 4.3+
+                var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/lst/str[@name='word']");
+                
                 foreach (var suggestionNode in suggestionNodes) {
                     suggestions.Add(suggestionNode.Value);
+                }
+                if (suggestions.Count == 0)
+                {
+                    suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
+
+                    foreach (var suggestionNode in suggestionNodes)
+                    {
+                        suggestions.Add(suggestionNode.Value);
+                    }
+
                 }
                 result.Suggestions = suggestions;
                 r.Add(result);
