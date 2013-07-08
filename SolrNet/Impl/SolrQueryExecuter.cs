@@ -581,9 +581,20 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <returns>query results</returns>
         public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
+            
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
-            var r = connection.Get(Handler, param);
+
+            //edit by heran at 2013-07-08 15:17:14
+            //when use 
+            string handler = Handler;
+            var tmp =  from p in param where p.Key == "qt" select p;
+            if (tmp.Count() > 0)
+            {
+                handler = tmp.First().Value;
+            }
+
+            var r = connection.Get(handler, param);
             var xml = XDocument.Parse(r);
             resultParser.Parse(xml, results);
             return results;
