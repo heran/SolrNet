@@ -54,7 +54,9 @@ namespace SolrNet.Commands {
 
 		    var keyValuePairs = new[] {
 		        new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
-                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
+                //deleted by Heran At 2013-07-08 11:50:15
+                //solr3.6+ does not support "wait flush"
+                //new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
                 new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes")
 		    };
 
